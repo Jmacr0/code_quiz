@@ -1,0 +1,13 @@
+#ul-2 {
+   list-style: none; 
+   padding-left: 0;
+}
+
+#ul-2 li {
+     cursor: pointer; 
+     background-color: purple;
+     color: white;
+     margin: 10px;
+     padding-top: 5px;
+     padding-bottom: 5px;
+}
