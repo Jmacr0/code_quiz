@@ -39,7 +39,11 @@ var questions = [
   ///etc.
 ];
 
+
+
 startButton.addEventListener('click', initTimer);
+
+
 
 
 function initTimer() {
@@ -47,6 +51,8 @@ function initTimer() {
   startButton.setAttribute("style", "display: none;");
   timer();
 }
+
+
 
 function timer() {
   displayQuestion();
@@ -67,6 +73,8 @@ function timer() {
 
 }
 
+
+
 function displayQuestion() {
   
 
@@ -82,10 +90,13 @@ function displayQuestion() {
   }
 
 
+
+
+
 ul.addEventListener('click', selectOption);
 
 function selectOption() {
-  console.log(event.target)
+  
   correct.setAttribute("style", "display: none;")
   wrong.setAttribute("style", "display: none;")
 
@@ -110,6 +121,7 @@ function selectOption() {
 function displayScore() {
   //if all questions answered or time runs out then execute this
   if (questionSelect === questions.length) {
+    main.setAttribute("style", "display: none;")
     if (count.innerHTML > 0) {
       finalScore.setAttribute("style", "display: block;");
       finalScoreSpan.textContent = count.textContent;
