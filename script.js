@@ -1,5 +1,5 @@
 var highScores = document.querySelector('#high-scores')
-// var highScoresReturn = document.querySelector('#high-scores-return')
+var highScoresReturn = document.querySelector('#high-scores-return')
 
 
 var showHighScorers = document.querySelector('#show-high-scorers')
@@ -198,7 +198,15 @@ function storeScore() {
     message.setAttribute("style", "display: block;")
     message.innerHTML = "Sorry you didn't beat the High Score!"
 
-    startButton.setAttribute("style", "display: block;");
+    setTimeout(() => {
+      message.setAttribute("style", "display: none;")
+    }, 2000);
+
+    startButton.setAttribute("style", "display: none;");
+
+    setTimeout(() => {
+      startButton.setAttribute("style", "display: block;");
+    }, 2000);
   }
   else {
     localStorage.setItem("user", JSON.stringify(user))
@@ -219,19 +227,19 @@ highScores.addEventListener('click', showScores);
 function showScores() {
   showHighScorers.innerHTML = JSON.parse(localStorage.getItem("user")).player + ": " + JSON.parse(localStorage.getItem("user")).playerScore
   showHighScorers.setAttribute("style", "display: block;")
-  startButton.setAttribute("style", "display: block;");
+  startButton.setAttribute("style", "display: none;");
   message.setAttribute("style", "display: none;")
   finalScore.setAttribute("style", "display: none;");
   userName.setAttribute("style", "display: none;");
   submitButton.setAttribute("style", "display: none;")
   highScores.setAttribute("style", "display: none;")
-  // highScoresReturn.setAttribute("style", "display: block;")
+  highScoresReturn.setAttribute("style", "display: block;")
 
 }
 
-// highScoresReturn.addEventListener('click', function(){
-//   startButton.setAttribute("style", "display: block");
-//   highScores.setAttribute("style", "display: block;")
-//   highScoresReturn.setAttribute("style", "display: none;")
-//   showHighScorers.setAttribute("style", "display: none;")
-// })
+highScoresReturn.addEventListener('click', function(){
+  startButton.setAttribute("style", "display: block");
+  highScores.setAttribute("style", "display: block;")
+  highScoresReturn.setAttribute("style", "display: none;")
+  showHighScorers.setAttribute("style", "display: none;")
+})

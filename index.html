@@ -12,20 +12,22 @@
 </head>
 
 <body>
+    <div class="nav-item mr-auto p-3" style="float: left; cursor: pointer;">
+        <p id="high-scores-return" style="display: none;">Return</p>
+    </div>
+
     <ul class="nav p-3">
-        <li class="nav-item mr-auto">
-            <button id="high-scores">View HighScores</button>
+        <li class="nav-item mr-auto" style="cursor: pointer;">
+            <p id="high-scores">View HighScores</p>
         </li>
-        <!-- <li class="nav-item mr-auto">
-            <button id="high-scores-return" style="display: none;">Return</button>
-        </li> -->
+        
         <li class="nav-item ml-auto">
             <p>Time: <span id="counter">0</span></p>
         </li>
     </ul>
 
     <div class="container text-center">
-        <button class="btn btn-primary btn-block col-md-6 mx-auto mb-4" id="start-button">START QUIZ</button>
+        <button class="btn btn-primary btn-block col-md-6 mx-auto mb-4 mt-4 pt-3 pb-3" id="start-button">START QUIZ</button>
     </div>
 
     <div class="container" id="main" style="display: none;">
@@ -36,7 +38,7 @@
 
         </div>
         <div class="row">
-            <div class="col-5 mx-auto">
+            <div class="col-md-7 mx-auto">
                 <ul id="ul-2" class="text-center">
                     <li></li>
                     <li></li>
@@ -69,7 +71,7 @@
         <div class="row">
             <div class="col text-center">
                 <input type="text" placeholder="Enter Your Name" class="text-center mx-auto mb-3" style="display: none;" id="user-name">
-                <button class="btn btn-secondary mx-auto text-center mt-1" id="submit" style="display: none;">Submit</button>
+                <button class="btn btn-secondary mx-auto text-center mt-1 mb-4" id="submit" style="display: none;">Submit</button>
             </div>
         </div>
         <div class="row">
