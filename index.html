@@ -14,17 +14,20 @@
 <body>
     <ul class="nav p-3">
         <li class="nav-item mr-auto">
-           <button>View HighScores</button>
+            <button id="high-scores">View HighScores</button>
         </li>
+        <!-- <li class="nav-item mr-auto">
+            <button id="high-scores-return" style="display: none;">Return</button>
+        </li> -->
         <li class="nav-item ml-auto">
             <p>Time: <span id="counter">0</span></p>
         </li>
     </ul>
 
     <div class="container text-center">
-        <button class="btn btn-primary btn-block col-md-6 mx-auto" id="start-button">START QUIZ</button>
-    </div> 
-    
+        <button class="btn btn-primary btn-block col-md-6 mx-auto mb-4" id="start-button">START QUIZ</button>
+    </div>
+
     <div class="container" id="main" style="display: none;">
         <div class="row">
             <div class="col text-center">
@@ -44,22 +47,47 @@
         </div>
 
         <div class="row text-center">
-            <div class="col" id="correct" style="display: none;"><p>Correct!</p></div>
-            <div class="col" id="wrong" style="display: none;"><p>Wrong!</p></div>
+            <div class="col" id="correct" style="display: none;">
+                <p>Correct!</p>
+            </div>
+            <div class="col" id="wrong" style="display: none;">
+                <p>Wrong!</p>
+            </div>
         </div>
 
     </div>
 
     <div class="container">
         <div class="row text-center">
-            <div class="col" style="display: none;" id="final-score">
-                <h2 >Your Final Score is: <span>0</span></h2>
+            <div class="col mb-3" style="display: none;" id="final-score">
+                <h2>Your Final Score is: <span>0</span></h2>
             </div>
-            <div class="col"style="display: none;" id="no-time">
+            <div class="col mb-3" style="display: none;" id="no-time">
                 <h2>You Ran Out Of Time!</h2>
             </div>
         </div>
+        <div class="row">
+            <div class="col text-center">
+                <input type="text" placeholder="Enter Your Name" class="text-center mx-auto mb-3" style="display: none;" id="user-name">
+                <button class="btn btn-secondary mx-auto text-center mt-1" id="submit" style="display: none;">Submit</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h2 id="message" style="display: none;"></h2>
+            </div>
+        </div>
     </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h2 id="show-high-scorers"></h2>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="script.js"></script>
 </body>
