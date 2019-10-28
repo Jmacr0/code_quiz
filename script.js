@@ -72,6 +72,7 @@ startButton.addEventListener('click', initTimer);
 
 
 function initTimer() {
+  console.log("running")
   count.innerHTML = 10 * questions.length;
   startButton.setAttribute("style", "display: none;");
   message.setAttribute("style", "display: none;")
@@ -85,16 +86,16 @@ function timer() {
   displayQuestion();
 
 
-  setInterval(() => {
+  var timer = setInterval(() => {
     if (questionSelect === questions.length) {
-      clearInterval();
+      clearInterval(timer);
 
     } else if (count.innerHTML > 0) {
       count.innerHTML--
     }
     else {
       //gameover
-      clearInterval();
+      clearInterval(timer);
     }
   }, 1000);
 
@@ -129,10 +130,18 @@ function selectOption() {
 
   if (event.target.textContent === questions[questionSelect]["answer"]) {
     correct.setAttribute("style", "display: block;")
+    setTimeout(() => {
+      correct.setAttribute("style", "display: none;")
+    }, 1500);
+
+
     questionSelect++
     displayScore();
   } else {
     wrong.setAttribute("style", "display: block;")
+    setTimeout(() => {
+      wrong.setAttribute("style", "display: none;")
+    }, 1500);
     if (count.innerHTML < 5) {
       count.innerHTML = 0;
     } else {
@@ -170,6 +179,7 @@ submitButton.addEventListener('click', storeScore);
 
 function storeScore() {
   event.preventDefault();
+
   questionSelect = 0;
 
   user.player = userName.value.trim()
@@ -200,12 +210,7 @@ function storeScore() {
 
     startButton.setAttribute("style", "display: block;");
 
-
-
   }
-
-
-
 }
 
 
