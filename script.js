@@ -96,6 +96,16 @@ function timer() {
     else {
       //gameover
       clearInterval(timer);
+      main.setAttribute("style", "display: none;")
+      noTime.setAttribute("style", "display: block;");
+
+      setTimeout(() => {
+        noTime.setAttribute("style", "display: none;");
+      }, 2000);
+
+      setTimeout(() => {
+        startButton.setAttribute("style", "display: block;");
+      }, 2000);
     }
   }, 1000);
 
@@ -165,6 +175,14 @@ function displayScore() {
       submitButton.setAttribute("style", "display: block;")
     } else {
       noTime.setAttribute("style", "display: block;");
+
+      setTimeout(() => {
+        noTime.setAttribute("style", "display: none;");
+      }, 2000);
+
+      setTimeout(() => {
+        startButton.setAttribute("style", "display: block;");
+      }, 2000);
 
     }
   } else {
