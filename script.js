@@ -14,7 +14,6 @@ var wrong = $('#wrong');
 
 var finalScore = $('#final-score')
 var finalScoreSpan = $('span')
-console.log(typeof finalScoreSpan.html())
 var noTime = $('#no-time')
 
 
@@ -87,11 +86,10 @@ function initTimer() {
 
   //start timer
   var timer = setInterval(() => {
-    if (hiddenCounter === 0) clearInterval(timer);
-    if (questionSelect === (questions.length - 1)) clearInterval(timer);
     count.html(hiddenCounter);
     hiddenCounter--
-
+    if (hiddenCounter === 0) clearInterval(timer);
+    if (questionSelect === questions.length - 1) clearInterval(timer);
   }, 1000);
 
   //display the question and options
@@ -141,6 +139,7 @@ function selectOption() {
       wrong.attr("style", "display: none;")
     }, 1000);
     hiddenCounter -= 5
+
     //increment questions array indexer
     questionSelect++
     //check if gameover or continue
