@@ -1,47 +1,45 @@
-var highScores = document.querySelector('#high-scores')
-var highScoresReturn = document.querySelector('#high-scores-return')
+var highScores = $('#high-scores')
+var highScoresReturn = $('#high-scores-return')
 
+var showHighScorers = $('#show-high-scorers')
+var message = $('#message')
 
-var showHighScorers = document.querySelector('#show-high-scorers')
-var message = document.querySelector('#message')
+var startButton = $('#start-button')
+var count = $('#counter')
+var main = $('#main')
+var ul = document.getElementsByTagName('UL')[0];
 
-var startButton = document.querySelector('#start-button')
-var count = document.querySelector('#counter')
-var main = document.getElementById("main")
-var ul = document.getElementsByTagName('UL')[1];
+var correct = $('#correct');
+var wrong = $('#wrong');
 
-var correct = document.getElementById('correct');
-var wrong = document.getElementById('wrong');
-
-var finalScore = document.querySelector('#final-score')
+var finalScore = $('#final-score')
 var finalScoreSpan = document.querySelector('#final-score').children[0].children[0]
 
-var noTime = document.querySelector('#no-time')
-var userName = document.querySelector('#user-name')
+var noTime = $('#no-time')
 
-var submitButton = document.querySelector('#submit')
 
+var submitButton = $('#submit')
+var userName = $('#user-name')
 
 //variable to access questions and options
 var questionSelect = 0;
 
+//variables to set the question and options
+var question = $('#question')
+var option1 = document.getElementsByTagName('LI')[0];
+var option2 = document.getElementsByTagName('LI')[1];
+var option3 = document.getElementsByTagName('LI')[2];
+var option4 = document.getElementsByTagName('LI')[3];
 
-//Variables to set the question and options
-var question = document.getElementById('question')
-var option1 = document.getElementsByTagName('LI')[2];
-var option2 = document.getElementsByTagName('LI')[3];
-var option3 = document.getElementsByTagName('LI')[4];
-var option4 = document.getElementsByTagName('LI')[5];
-
-
+//variable to save user to local storage using JSON
 var user = {
-  player: userName.value.trim(),
+  player: $.trim(userName.val()),
   playerScore: finalScoreSpan.innerHTML,
 
 };
 
 
-
+//an array of objects that have the question, options, and answers. These used to access, show to the user, and checked selections against answer if correct
 var questions = [
   {
     title: "Commonly used data types DO NOT include:",
@@ -59,55 +57,68 @@ var questions = [
     answer: "document object model"
   },
   {
-    title: "The condition in an if / else statement is enclosed within ____.",
+    title: "An array variable is enclosed within ____.",
     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-    answer: "parentheses"
+    answer: "square brackets"
   },
   ///etc.
 ];
 
+//hidden javascript counter
+var hiddenCounter = 1;
+
+//listening for a click on the start button
+startButton.click(initTimer)
 
 
-startButton.addEventListener('click', initTimer);
-
-
+//reset and set length of timer
 function initTimer() {
-  console.log("running")
-  count.innerHTML = 10 * questions.length;
-  startButton.setAttribute("style", "display: none;");
-  message.setAttribute("style", "display: none;")
-  showHighScorers.setAttribute("style", "display: none;")
-  timer();
-}
+  //hide all displays
+  startButton.attr("style", "display: none;");
+  message.attr("style", "display: none;")
+  showHighScorers.attr("style", "display: none;")
+  //reset hiddencounter and set displayed count to hiddencounter
+  hiddenCounter = hiddenCounter * questions.length * 10;
+  count.html(hiddenCounter)
 
-
-
-function timer() {
-  displayQuestion();
-
-
+  //start timer
   var timer = setInterval(() => {
-    if (questionSelect === questions.length) {
-      clearInterval(timer);
-
-    } else if (count.innerHTML > 0) {
-      count.innerHTML--
-    }
-    else {
-      //gameover
-      clearInterval(timer);
-      main.setAttribute("style", "display: none;")
-      noTime.setAttribute("style", "display: block;");
-
-      setTimeout(() => {
-        noTime.setAttribute("style", "display: none;");
-      }, 2000);
-
-      setTimeout(() => {
-        startButton.setAttribute("style", "display: block;");
-      }, 2000);
+    if(hiddenCounter === 0){
+      clearInterval(timer)
+    } else {
+      hiddenCounter--
+      count.html(hiddenCounter)
     }
   }, 1000);
+
+
+  displayQuestion();
+
+  // var timer = setInterval(() => {
+  //   //all questions asked then clear timer
+  //   if (questionSelect === questions.length) {
+  //     clearInterval(timer);
+  //     console.log("hi")
+  //   //otherwise if hiddenCount > 0, increment -1
+  //   } else if (hiddenCounter > 0) {
+  //     hiddenCounter--
+  //     count.html(hiddenCounter)
+  //   }
+  //   else {
+  //     //gameover
+  //     clearInterval(timer);
+  //     main.attr("style", "display: none;")
+  //     noTime.attr("style", "display: block;");
+
+  //     setTimeout(() => {
+  //       noTime.attr("style", "display: none;");
+  //     }, 2000);
+
+  //     setTimeout(() => {
+  //       startButton.attr("style", "display: block;");
+  //     }, 2000);
+  //   }
+  // }, 1000);
 
 }
 
@@ -115,11 +126,10 @@ function timer() {
 
 function displayQuestion() {
 
+  main.attr("style", "display: block;")
 
-  main.setAttribute("style", "display: block;")
 
-
-  question.innerHTML = questions[questionSelect]["title"];
+  question.html(questions[questionSelect]["title"]);
   option1.innerHTML = questions[questionSelect]["choices"][0];
   option2.innerHTML = questions[questionSelect]["choices"][1];
   option3.innerHTML = questions[questionSelect]["choices"][2];
@@ -128,34 +138,31 @@ function displayQuestion() {
 }
 
 
-
-
-
 ul.addEventListener('click', selectOption);
 
 function selectOption() {
 
-  correct.setAttribute("style", "display: none;")
-  wrong.setAttribute("style", "display: none;")
+  correct.attr("style", "display: none;")
+  wrong.attr("style", "display: none;")
 
   if (event.target.textContent === questions[questionSelect]["answer"]) {
-    correct.setAttribute("style", "display: block;")
+    correct.attr("style", "display: block;")
     setTimeout(() => {
-      correct.setAttribute("style", "display: none;")
-    }, 1500);
-
-
+      correct.attr("style", "display: none;")
+    }, 1000);
     questionSelect++
     displayScore();
+
   } else {
-    wrong.setAttribute("style", "display: block;")
+    wrong.attr("style", "display: block;")
     setTimeout(() => {
-      wrong.setAttribute("style", "display: none;")
-    }, 1500);
-    if (count.innerHTML < 5) {
-      count.innerHTML = 0;
+      wrong.attr("style", "display: none;")
+    }, 1000);
+
+    if (hiddenCounter < 5) {
+      hiddenCounter = 0;
     } else {
-      count.innerHTML = count.innerHTML - 5
+      hiddenCounter -= 5
       questionSelect++
       displayScore();
     }
@@ -167,21 +174,21 @@ function selectOption() {
 function displayScore() {
   //if all questions answered or time runs out then execute this
   if (questionSelect === questions.length) {
-    main.setAttribute("style", "display: none;")
+    main.attr("style", "display: none;")
     if (count.innerHTML > 0) {
       finalScoreSpan.textContent = count.textContent;
-      finalScore.setAttribute("style", "display: block;");
-      userName.setAttribute("style", "display: block;");
-      submitButton.setAttribute("style", "display: block;")
+      finalScore.attr("style", "display: block;");
+      userName.attr("style", "display: block;");
+      submitButton.attr("style", "display: block;")
     } else {
-      noTime.setAttribute("style", "display: block;");
+      noTime.attr("style", "display: block;");
 
       setTimeout(() => {
-        noTime.setAttribute("style", "display: none;");
+        noTime.attr("style", "display: none;");
       }, 2000);
 
       setTimeout(() => {
-        startButton.setAttribute("style", "display: block;");
+        startButton.attr("style", "display: block;");
       }, 2000);
 
     }
@@ -190,7 +197,7 @@ function displayScore() {
   }
 }
 
-submitButton.addEventListener('click', storeScore);
+submitButton.on('click', storeScore);
 
 
 
@@ -200,64 +207,77 @@ function storeScore() {
 
   questionSelect = 0;
 
-  user.player = userName.value.trim()
+  user.player = $.trim(userName.val())
   user.playerScore = finalScoreSpan.innerHTML
 
 
   if (user.player === "") {
-    message.setAttribute("style", "display: block;")
+    $('#message').attr("style", "display: block;")
     message.innerHTML = "Name cannot be blank!"
     return;
-  } else if (user.playerScore < parseInt(JSON.parse(localStorage.getItem("user")).playerScore)) {
-    finalScore.setAttribute("style", "display: none;");
-    userName.setAttribute("style", "display: none;");
-    submitButton.setAttribute("style", "display: none;")
-
-    message.setAttribute("style", "display: block;")
-    message.innerHTML = "Sorry you didn't beat the High Score!"
-
-    setTimeout(() => {
-      message.setAttribute("style", "display: none;")
-    }, 2000);
-
-    startButton.setAttribute("style", "display: none;");
-
-    setTimeout(() => {
-      startButton.setAttribute("style", "display: block;");
-    }, 2000);
-  }
-  else {
+  } else if (localStorage.getItem("user") === null || user.playerScore > parseInt(JSON.parse(localStorage.getItem("user")).playerScore)) {
+    console.log('no score saved')
     localStorage.setItem("user", JSON.stringify(user))
     finalScore.setAttribute("style", "display: none;");
-    userName.setAttribute("style", "display: none;");
+    userName.attr("style", "display: none;");
     submitButton.setAttribute("style", "display: none;")
-    message.setAttribute("style", "display: block;")
-    message.innerHTML = "Score Saved!"
+    $('#message').attr("style", "display: block;")
 
-    startButton.setAttribute("style", "display: block;");
+    setTimeout(() => {
+      message.innerHTML = "Score Saved!"
+    }, 1000);
+
+
+    setTimeout(() => {
+      startButton.attr("style", "display: block;");
+    }, 1000);
+
+
 
   }
+  else {
+    finalScore.setAttribute("style", "display: none;");
+    userName.attr("style", "display: none;");
+    submitButton.setAttribute("style", "display: none;")
+
+    message.attr("style", "display: block;")
+    message.html("Sorry you didn't beat the High Score!")
+
+    setTimeout(() => {
+      message.attr("style", "display: none;")
+    }, 2000);
+
+    startButton.attr("style", "display: none;");
+
+    setTimeout(() => {
+      startButton.attr("style", "display: block;");
+    }, 2000);
+
+    count.innerHTML = 0
+  }
+
 }
 
-
-highScores.addEventListener('click', showScores);
+highScores.on('click', showScores);
 
 function showScores() {
-  showHighScorers.innerHTML = JSON.parse(localStorage.getItem("user")).player + ": " + JSON.parse(localStorage.getItem("user")).playerScore
-  showHighScorers.setAttribute("style", "display: block;")
-  startButton.setAttribute("style", "display: none;");
-  message.setAttribute("style", "display: none;")
-  finalScore.setAttribute("style", "display: none;");
-  userName.setAttribute("style", "display: none;");
+  show - high - scorers.html(JSON.parse(localStorage.getItem("user")).player + ": " + JSON.parse(localStorage.getItem("user")).playerScore);
+  show - high - scorers.attr("style", "display: block;")
+  startButton.attr("style", "display: none;");
+  message.attr("style", "display: none;")
+  finalScore.attr("style", "display: none;");
+  userName.attr("style", "display: none;");
   submitButton.setAttribute("style", "display: none;")
-  highScores.setAttribute("style", "display: none;")
-  highScoresReturn.setAttribute("style", "display: block;")
+  highScores.attr("style", "display: none;")
+  highScoresReturn.attr("style", "display: block;")
 
 }
 
-highScoresReturn.addEventListener('click', function(){
-  startButton.setAttribute("style", "display: block");
-  highScores.setAttribute("style", "display: block;")
-  highScoresReturn.setAttribute("style", "display: none;")
-  showHighScorers.setAttribute("style", "display: none;")
+highScoresReturn.on('click', function () {
+  startButton.attr("style", "display: block");
+  highScores.attr("style", "display: block;")
+  highScoresReturn.attr("style", "display: none;")
+  showHighScorers.attr("style", "display: none;")
 })
+
+

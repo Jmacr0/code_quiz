@@ -1,13 +1,36 @@
-#ul-2 {
+#high-scores {
+   cursor: pointer;
+}
+
+#high-scores-return {
+   cursor: pointer;
+}
+
+#high-scores:hover {
+   color: rgb(46, 36, 185);
+   transition-duration: 0.4s;
+}
+
+#high-scores-return:hover {
+   color: rgb(46, 36, 185);
+   transition-duration: 0.4s;
+}
+
+
+ul {
    list-style: none; 
    padding-left: 0;
 }
 
-#ul-2 li {
+ul li {
      cursor: pointer; 
      background-color: purple;
      color: white;
      margin: 10px;
      padding-top: 5px;
      padding-bottom: 5px;
+}
+
+#correct, #wrong {
+   font-size: 2em;
 }

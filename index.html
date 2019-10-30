@@ -7,27 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <link rel="stylesheet" href="style.css">
     <title>Code Quiz</title>
 </head>
 
 <body>
-    <div class="nav-item mr-auto p-3" style="float: left; cursor: pointer;">
-        <p id="high-scores-return" style="display: none;">Return</p>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <p id="high-scores-return" class="mr-auto" style="display: none;">Return</p>
+
+                <p id="high-scores" class="mr-auto" style="display: block;">View HighScores</p>
+            </div>
+            <div class="col-6 text-right">
+                <p>Time: <span id="counter">0</span></p>
+            </div>
+        </div>
     </div>
 
-    <ul class="nav p-3">
-        <li class="nav-item mr-auto" style="cursor: pointer;">
-            <p id="high-scores">View HighScores</p>
-        </li>
-        
-        <li class="nav-item ml-auto">
-            <p>Time: <span id="counter">0</span></p>
-        </li>
-    </ul>
+
+
+
+
 
     <div class="container text-center">
-        <button class="btn btn-primary btn-block col-md-6 mx-auto mb-4 mt-4 pt-3 pb-3" id="start-button">START QUIZ</button>
+        <button class="btn btn-primary btn-block col-md-6 mx-auto mb-4 mt-5 pt-3 pb-3" id="start-button">START
+            QUIZ</button>
     </div>
 
     <div class="container" id="main" style="display: none;">
@@ -39,7 +46,7 @@
         </div>
         <div class="row">
             <div class="col-md-7 mx-auto">
-                <ul id="ul-2" class="text-center">
+                <ul class="text-center">
                     <li></li>
                     <li></li>
                     <li></li>
@@ -48,16 +55,12 @@
             </div>
         </div>
 
-        <div class="row text-center">
-            <div class="col" id="correct" style="display: none;">
-                <p>Correct!</p>
-            </div>
-            <div class="col" id="wrong" style="display: none;">
-                <p>Wrong!</p>
-            </div>
-        </div>
-
     </div>
+
+
+
+
+
 
     <div class="container">
         <div class="row text-center">
@@ -70,8 +73,10 @@
         </div>
         <div class="row">
             <div class="col text-center">
-                <input type="text" placeholder="Enter Your Name" class="text-center mx-auto mb-3" style="display: none;" id="user-name">
-                <button class="btn btn-secondary mx-auto text-center mt-1 mb-4" id="submit" style="display: none;">Submit</button>
+                <input type="text" placeholder="AAA" maxlength="3" class="text-center mx-auto mb-3"
+                    style="display: none;" id="user-name">
+                <button class="btn btn-secondary mx-auto text-center mt-1 mb-4" id="submit"
+                    style="display: none;">Submit</button>
             </div>
         </div>
         <div class="row">
@@ -82,6 +87,18 @@
     </div>
 
     <div class="container">
+        <div class="row text-center mx-2">
+            <div class="col-md-7 mx-auto alert alert-success" id="correct" style="display: none;">
+                <p>Correct!</p>
+            </div>
+            <div class="col-md-7 mx-auto alert alert-danger" id="wrong" style="display: none;">
+                <p>Wrong!</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
         <div class="row">
             <div class="col text-center">
                 <h2 id="show-high-scorers"></h2>
@@ -90,7 +107,8 @@
     </div>
 
 
-
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
 
