@@ -1,22 +1,33 @@
+//nav links to view high score and to go back
 var highScores = $('#high-scores')
 var highScoresReturn = $('#high-scores-return')
 
+//insert high scorers name and score to be displayed
 var showHighScorers = $('#show-high-scorers')
+
+//insert messages that are change dynamically with DOM
 var message = $('#message')
 
+//button to start quiz
 var startButton = $('#start-button')
+//visual representation of the timer on the page
 var count = $('#counter')
+//main container holding questions and options
 var main = $('#main')
+//variable targeting the unordered list tag to set event delegation
 var ul = document.getElementsByTagName('UL')[0];
 
+//display if user selection is correct or incorrect
 var correct = $('#correct');
 var wrong = $('#wrong');
 
+//displays final score when game is over
 var finalScore = $('#final-score')
 var finalScoreSpan = $('span')
+//displays if user ran out of time 
 var noTime = $('#no-time')
 
-
+//targets user input for their entered name and submit button for storing to local storage
 var submitButton = $('#submit')
 var userName = $('#user-name')
 
@@ -153,12 +164,13 @@ function selectOption() {
 function scoreCheck() {
   //check if all questions answered
   if (questionSelect === questions.length) {
+    //set the players final score equal to hidden counter
     user.playerScore = hiddenCounter
     main.attr("style", "display: none;")
     finalScoreSpan.html(hiddenCounter);
     finalScore.attr("style", "display: block;");
     //check if final score is higher than current high score
-    if (user.playerScore < parseInt(JSON.parse(localStorage.getItem('playerScore')))) {
+    if (user.playerScore < parseInt(JSON.parse(localStorage.getItem('user')).playerScore)) {
       //display message if high score not beaten
       message.attr("style", "display: block;")
       message.html("Sorry you didn't beat the High Score!")
@@ -232,12 +244,14 @@ function storeScore() {
 
 }
 
+//click to view high score
 highScores.on('click', showScores);
 
 function showScores() {
   questionSelect = 0;
   hiddenCounter = 0;
   count.html(hiddenCounter)
+  //if no high score on local storage, return "no high score"
   if (JSON.parse(localStorage.getItem("user")) === null) {
     highScores.attr("style", "display: none;")
     highScoresReturn.attr("style", "display: block;")
@@ -249,6 +263,7 @@ function showScores() {
       message.attr("style", "display: none;")
     }, 2000);
   } else {
+    //otherwise display the high scorer
     showHighScorers.html(JSON.parse(localStorage.getItem("user")).player + ": " + JSON.parse(localStorage.getItem("user")).playerScore);
     showHighScorers.attr("style", "display: block;")
     main.attr("style", "display: none;")
@@ -262,6 +277,7 @@ function showScores() {
   }
 }
 
+//return button takes user back from viewing high score to start quiz
 highScoresReturn.on('click', function () {
   startButton.attr("style", "display: block");
   highScores.attr("style", "display: block;")
