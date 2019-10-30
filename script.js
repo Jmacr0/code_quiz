@@ -13,8 +13,8 @@ var correct = $('#correct');
 var wrong = $('#wrong');
 
 var finalScore = $('#final-score')
-var finalScoreSpan = document.querySelector('#final-score').children[0].children[0]
-
+var finalScoreSpan = $('span')
+console.log(typeof finalScoreSpan.html())
 var noTime = $('#no-time')
 
 
@@ -34,7 +34,7 @@ var option4 = document.getElementsByTagName('LI')[3];
 //variable to save user to local storage using JSON
 var user = {
   player: $.trim(userName.val()),
-  playerScore: finalScoreSpan.innerHTML,
+  playerScore: parseInt(finalScoreSpan.html()),
 
 };
 
@@ -70,55 +70,32 @@ var hiddenCounter = 1;
 //listening for a click on the start button
 startButton.click(initTimer)
 
-
 //reset and set length of timer
 function initTimer() {
+
+
   //hide all displays
   startButton.attr("style", "display: none;");
-  message.attr("style", "display: none;")
-  showHighScorers.attr("style", "display: none;")
+  message.attr("style", "display: none;");
+  showHighScorers.attr("style", "display: none;");
   //reset hiddencounter and set displayed count to hiddencounter
+  hiddenCounter = 1;
   hiddenCounter = hiddenCounter * questions.length * 10;
-  count.html(hiddenCounter)
+  //set count and hiddencounter-- in this scope to start timer correctly (var timer does not start straight away)
+  count.html(hiddenCounter);
+  hiddenCounter--
 
   //start timer
   var timer = setInterval(() => {
-    if(hiddenCounter === 0){
-      clearInterval(timer)
-    } else {
-      hiddenCounter--
-      count.html(hiddenCounter)
-    }
+    if (hiddenCounter === 0) clearInterval(timer);
+    if (questionSelect === (questions.length - 1)) clearInterval(timer);
+    count.html(hiddenCounter);
+    hiddenCounter--
+
   }, 1000);
 
-
+  //display the question and options
   displayQuestion();
-
-  // var timer = setInterval(() => {
-  //   //all questions asked then clear timer
-  //   if (questionSelect === questions.length) {
-  //     clearInterval(timer);
-  //     console.log("hi")
-  //   //otherwise if hiddenCount > 0, increment -1
-  //   } else if (hiddenCounter > 0) {
-  //     hiddenCounter--
-  //     count.html(hiddenCounter)
-  //   }
-  //   else {
-  //     //gameover
-  //     clearInterval(timer);
-  //     main.attr("style", "display: none;")
-  //     noTime.attr("style", "display: block;");
-
-  //     setTimeout(() => {
-  //       noTime.attr("style", "display: none;");
-  //     }, 2000);
-
-  //     setTimeout(() => {
-  //       startButton.attr("style", "display: block;");
-  //     }, 2000);
-  //   }
-  // }, 1000);
 
 }
 
@@ -141,107 +118,104 @@ function displayQuestion() {
 ul.addEventListener('click', selectOption);
 
 function selectOption() {
-
+  //reset messages
   correct.attr("style", "display: none;")
   wrong.attr("style", "display: none;")
 
+  //check if selection is equal to answer
   if (event.target.textContent === questions[questionSelect]["answer"]) {
+    //set message to correct
     correct.attr("style", "display: block;")
     setTimeout(() => {
       correct.attr("style", "display: none;")
     }, 1000);
+    //add 1 to questionSelect (my indexer for questions array)
     questionSelect++
-    displayScore();
+    //call scoreCheck to check if game end or continue
+    scoreCheck();
 
   } else {
+    //set message to
     wrong.attr("style", "display: block;")
     setTimeout(() => {
       wrong.attr("style", "display: none;")
     }, 1000);
-
-    if (hiddenCounter < 5) {
-      hiddenCounter = 0;
-    } else {
-      hiddenCounter -= 5
-      questionSelect++
-      displayScore();
-    }
-
+    hiddenCounter -= 5
+    //increment questions array indexer
+    questionSelect++
+    //check if gameover or continue
+    scoreCheck();
   }
-}
+
+};
 
 
-function displayScore() {
-  //if all questions answered or time runs out then execute this
+
+function scoreCheck() {
+  //check if all questions answered
   if (questionSelect === questions.length) {
+    user.playerScore = hiddenCounter
     main.attr("style", "display: none;")
-    if (count.innerHTML > 0) {
-      finalScoreSpan.textContent = count.textContent;
-      finalScore.attr("style", "display: block;");
-      userName.attr("style", "display: block;");
-      submitButton.attr("style", "display: block;")
-    } else {
-      noTime.attr("style", "display: block;");
-
-      setTimeout(() => {
-        noTime.attr("style", "display: none;");
-      }, 2000);
-
+    finalScoreSpan.html(hiddenCounter);
+    finalScore.attr("style", "display: block;");
+    //check if final score is higher than current high score
+    if (user.playerScore < parseInt(JSON.parse(localStorage.getItem('playerScore')))) {
+      //display message if high score not beaten
+      message.attr("style", "display: block;")
+      message.html("Sorry you didn't beat the High Score!")
       setTimeout(() => {
         startButton.attr("style", "display: block;");
       }, 2000);
-
+    } else {
+      //show submit button if high score beaten
+      userName.attr("style", "display: block;");
+      submitButton.attr("style", "display: block;")
     }
+    //reset indexer
+    questionSelect = 0;
+
+  } else if (hiddenCounter === 0) {
+    //check if ran out of time
+    noTime.attr("style", "display: block;");
+    setTimeout(() => {
+      noTime.attr("style", "display: none;");
+    }, 2000);
+    //reset indexer
+    questionSelect = 0;
+    //show start quiz button
+    setTimeout(() => {
+      startButton.attr("style", "display: block;");
+    }, 2000);
   } else {
+    //else display the next question
     displayQuestion();
+
   }
 }
 
+//event listener on submit button
 submitButton.on('click', storeScore);
-
-
-
 
 function storeScore() {
   event.preventDefault();
 
-  questionSelect = 0;
-
+  //set user variable object values
   user.player = $.trim(userName.val())
-  user.playerScore = finalScoreSpan.innerHTML
+  user.playerScore = hiddenCounter
 
-
+  //if user enters blank name
   if (user.player === "") {
-    $('#message').attr("style", "display: block;")
-    message.innerHTML = "Name cannot be blank!"
-    return;
-  } else if (localStorage.getItem("user") === null || user.playerScore > parseInt(JSON.parse(localStorage.getItem("user")).playerScore)) {
-    console.log('no score saved')
-    localStorage.setItem("user", JSON.stringify(user))
-    finalScore.setAttribute("style", "display: none;");
-    userName.attr("style", "display: none;");
-    submitButton.setAttribute("style", "display: none;")
-    $('#message').attr("style", "display: block;")
-
-    setTimeout(() => {
-      message.innerHTML = "Score Saved!"
-    }, 1000);
-
-
-    setTimeout(() => {
-      startButton.attr("style", "display: block;");
-    }, 1000);
-
-
-
-  }
-  else {
-    finalScore.setAttribute("style", "display: none;");
-    userName.attr("style", "display: none;");
-    submitButton.setAttribute("style", "display: none;")
-
     message.attr("style", "display: block;")
-    message.html("Sorry you didn't beat the High Score!")
+    message.html("Name cannot be blank!")
+    return;
+  } else {
+    //set user in local storage as highest scorer
+    localStorage.setItem("user", JSON.stringify(user))
+    finalScore.attr("style", "display: none;");
+    userName.attr("style", "display: none;");
+    submitButton.attr("style", "display: none;")
+    message.attr("style", "display: block;")
+    message.html("Score saved!")
 
     setTimeout(() => {
       message.attr("style", "display: none;")
@@ -253,7 +227,8 @@ function storeScore() {
       startButton.attr("style", "display: block;");
     }, 2000);
 
-    count.innerHTML = 0
+    hiddenCounter = 0
+
   }
 
 }
@@ -261,16 +236,31 @@ function storeScore() {
 highScores.on('click', showScores);
 
 function showScores() {
-  show - high - scorers.html(JSON.parse(localStorage.getItem("user")).player + ": " + JSON.parse(localStorage.getItem("user")).playerScore);
-  show - high - scorers.attr("style", "display: block;")
-  startButton.attr("style", "display: none;");
-  message.attr("style", "display: none;")
-  finalScore.attr("style", "display: none;");
-  userName.attr("style", "display: none;");
-  submitButton.setAttribute("style", "display: none;")
-  highScores.attr("style", "display: none;")
-  highScoresReturn.attr("style", "display: block;")
-
+  questionSelect = 0;
+  hiddenCounter = 0;
+  count.html(hiddenCounter)
+  if (JSON.parse(localStorage.getItem("user")) === null) {
+    highScores.attr("style", "display: none;")
+    highScoresReturn.attr("style", "display: block;")
+    startButton.attr("style", "display: none;");
+    main.attr("style", "display: none;")
+    message.attr("style", "display: block;")
+    message.html("No High Score!")
+    setTimeout(() => {
+      message.attr("style", "display: none;")
+    }, 2000);
+  } else {
+    showHighScorers.html(JSON.parse(localStorage.getItem("user")).player + ": " + JSON.parse(localStorage.getItem("user")).playerScore);
+    showHighScorers.attr("style", "display: block;")
+    main.attr("style", "display: none;")
+    startButton.attr("style", "display: none;");
+    message.attr("style", "display: none;")
+    finalScore.attr("style", "display: none;");
+    userName.attr("style", "display: none;");
+    submitButton.attr("style", "display: none;")
+    highScores.attr("style", "display: none;")
+    highScoresReturn.attr("style", "display: block;")
+  }
 }
 
 highScoresReturn.on('click', function () {
