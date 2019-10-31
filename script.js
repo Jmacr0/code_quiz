@@ -170,7 +170,7 @@ function scoreCheck() {
     finalScoreSpan.html(hiddenCounter);
     finalScore.attr("style", "display: block;");
     //check if final score is higher than current high score
-    if (user.playerScore < parseInt(JSON.parse(localStorage.getItem('user')).playerScore)) {
+    if (parseInt(JSON.parse(localStorage.getItem('user'))).playerScore === null || user.playerScore < parseInt(JSON.parse(localStorage.getItem('user'))).playerScore) {
       //display message if high score not beaten
       message.attr("style", "display: block;")
       message.html("Sorry you didn't beat the High Score!")
