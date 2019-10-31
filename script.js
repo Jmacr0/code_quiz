@@ -170,21 +170,24 @@ function scoreCheck() {
     finalScoreSpan.html(hiddenCounter);
     finalScore.attr("style", "display: block;");
     //check if final score is higher than current high score
-    if (parseInt(JSON.parse(localStorage.getItem('user'))).playerScore === null || user.playerScore < parseInt(JSON.parse(localStorage.getItem('user'))).playerScore) {
+
+    if (JSON.parse(localStorage.getItem('user')) === null) {
       //display message if high score not beaten
+      //show submit button if high score beaten
+      userName.attr("style", "display: block;");
+      submitButton.attr("style", "display: block;")
+      questionSelect = 0;
+    }
+    else if (user.playerScore < JSON.parse(localStorage.getItem('user')).playerScore) {
       message.attr("style", "display: block;")
       message.html("Sorry you didn't beat the High Score!")
       setTimeout(() => {
         startButton.attr("style", "display: block;");
+        message.attr("style", "display: none;")
       }, 2000);
-    } else {
-      //show submit button if high score beaten
-      userName.attr("style", "display: block;");
-      submitButton.attr("style", "display: block;")
+      //reset indexer
+      questionSelect = 0;
     }
-    //reset indexer
-    questionSelect = 0;
-
   } else if (hiddenCounter === 0) {
     //check if ran out of time
     noTime.attr("style", "display: block;");
